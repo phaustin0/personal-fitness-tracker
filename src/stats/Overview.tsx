@@ -2,8 +2,9 @@ import { useEffect, useMemo, useState } from 'preact/hooks';
 import { BarChart, LineChart } from '../charts/charts';
 import { EmptyState } from '../components/EmptyState';
 import { getDB } from '../db/db';
-import { exercises as exerciseRepo, sessions as sessionRepo, settings } from '../db/repos';
+import { exercises as exerciseRepo, meta, sessions as sessionRepo, settings } from '../db/repos';
 import type { Exercise, Schedule, Session } from '../db/types';
+import { needsBackupReminder } from '../backup/backup';
 import { href } from '../router';
 import { formatSet, progress } from '../workout/session';
 import { consistency, exerciseHistory, personalRecords, weeklyCounts, type ExercisePoint, type PrEvent } from './stats';
@@ -31,19 +32,20 @@ function metricValue(p: ExercisePoint, m: Metric): number | null {
 }
 
 export function Overview() {
-  const [data, setData] = useState<{ sessions: Session[]; library: Exercise[]; schedule: Schedule } | null>(null);
+  const [data, setData] = useState<{ sessions: Session[]; library: Exercise[]; schedule: Schedule; lastBackup: string | null } | null>(null);
   const [exerciseId, setExerciseId] = useState<string | null>(null);
   const [metric, setMetric] = useState<Metric | null>(null);
 
   useEffect(() => {
     void (async () => {
       const db = await getDB();
-      const [sessions, library, schedule] = await Promise.all([
+      const [sessions, library, schedule, lastBackup] = await Promise.all([
         sessionRepo.byStatus(db, 'completed'),
         exerciseRepo.list(db, { includeDeleted: true }),
         settings.get(db, 'schedule'),
+        meta.get(db, 'lastBackupAt'),
       ]);
-      setData({ sessions, library, schedule });
+      setData({ sessions, library, schedule, lastBackup: lastBackup ?? null });
     })();
   }, []);
 
@@ -88,8 +90,18 @@ export function Overview() {
     return v === null ? [] : [{ x: Date.parse(p.date), y: v, lines: p.sets.map(formatSet) }];
   });
 
+  const backupDue = needsBackupReminder(sessions, data.lastBackup, Date.now());
+
   return (
     <div class="overview">
+      {backupDue && (
+        <div class="banner-info">
+          {data.lastBackup
+            ? `Your last backup was ${dayLabel(data.lastBackup)} and you’ve trained since.`
+            : 'You haven’t backed up your workouts yet.'}{' '}
+          Your data only lives in this browser. <a href={href('settings')}>Export a backup in Settings</a>.
+        </div>
+      )}
       <div class="stat-row">
         <div class="stat">
           <div class="stat-label">This week</div>

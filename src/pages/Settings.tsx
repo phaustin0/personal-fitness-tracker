@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'preact/hooks';
+import { BackupPanel } from '../backup/BackupPanel';
 import { RoutineEditor } from '../components/RoutineEditor';
 import { ScheduleEditor } from '../schedule/ScheduleEditor';
 import { storageStatus, type StorageStatus } from '../db/storage';
@@ -56,12 +57,13 @@ export function SettingsPage() {
           </div>
         </div>
       </section>
-      <section class="panel">
+      <section class="panel" id="data">
         <h2>Data</h2>
         <div class="row">
           <span class="row-label">Storage</span>
           <span class="row-value">{storage ? storageLabels[storage] : 'Checking…'}</span>
         </div>
+        <BackupPanel />
       </section>
     </>
   );
