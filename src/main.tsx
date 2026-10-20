@@ -3,6 +3,8 @@ import { App } from './app';
 import { getDB } from './db/db';
 import { seedIfNeeded } from './db/seed';
 import { requestPersistentStorage } from './db/storage';
+import { setWorkoutActive } from './workout/activeFlag';
+import { getActiveSession } from './workout/store';
 import './styles.css';
 
 const root = document.getElementById('app')!;
@@ -10,6 +12,7 @@ const root = document.getElementById('app')!;
 getDB()
   .then(async (db) => {
     await seedIfNeeded(db);
+    setWorkoutActive(!!(await getActiveSession(db)));
     void requestPersistentStorage();
     render(<App />, root);
   })

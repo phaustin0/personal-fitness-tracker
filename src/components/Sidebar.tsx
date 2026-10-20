@@ -1,5 +1,6 @@
 import { IconBarbell, IconChartLine, IconHistory, IconSettings, type Icon as TablerIcon } from '@tabler/icons-preact';
 import { href, type Route } from '../router';
+import { useWorkoutActive } from '../workout/activeFlag';
 
 const items: { route: Route; label: string; Icon: TablerIcon }[] = [
   { route: 'dashboard', label: 'Dashboard', Icon: IconChartLine },
@@ -9,6 +10,7 @@ const items: { route: Route; label: string; Icon: TablerIcon }[] = [
 ];
 
 export function Sidebar({ current }: { current: Route }) {
+  const workoutActive = useWorkoutActive();
   return (
     <nav class="sidebar" aria-label="Main">
       <div class="sidebar-title">Fitness Tracker</div>
@@ -22,6 +24,7 @@ export function Sidebar({ current }: { current: Route }) {
             >
               <Icon size={17} stroke={1.75} />
               {label}
+              {route === 'workout' && workoutActive && <span class="live-dot" title="Workout in progress" />}
             </a>
           </li>
         ))}
