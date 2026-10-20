@@ -1120,3 +1120,51 @@ a.text-btn {
 .schedule-note.warn {
   color: var(--danger);
 }
+
+a.tab {
+  text-decoration: none;
+}
+
+.body-panel {
+  max-width: 1000px;
+}
+
+.body-form {
+  max-width: none;
+  margin-bottom: 20px;
+}
+
+.body-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+}
+
+.body-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.num-wide {
+  width: 110px;
+}
+
+.body-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.body-actions + .banner-error {
+  margin: 12px 0 0;
+}
+
+.body-table tr.current td {
+  background: var(--accent-soft);
+}
+
+.body-table .row-actions {
+  width: 72px;
+}
