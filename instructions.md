@@ -8,8 +8,10 @@ Single source of truth for building the fitness tracker. Read this fully before 
 
 - Planning: complete and approved.
 - Phase 0 done and deployed: https://phaustin0.github.io/personal-fitness-tracker/ (repo `phaustin0/personal-fitness-tracker`, Pages source = GitHub Actions).
-- **Phase 1 built, awaiting Faustino's review, not committed.** `src/db/`: types, schema + migration chain, `getDB()`, generic repos with soft delete, settings/meta key-value, one-time transactional seed, `navigator.storage.persist()`. 11 Vitest tests (`npm test`). App seeds on startup; Settings shows storage persistence. Fatal screen if IndexedDB can't open.
-- Next: Phase 2 (routine editor).
+- Phase 1 done, committed and pushed (`588af5f`). `src/db/`: types, schema + migration chain, `getDB()`, generic repos with soft delete, settings/meta key-value, one-time transactional seed, `navigator.storage.persist()`. 11 Vitest tests (`npm test`). App seeds on startup; Settings shows storage persistence. Fatal screen if IndexedDB can't open.
+- Phase 2 done, committed and pushed. Routine editor in Settings: tabs per routine, edit name/emphasis/default mode, per-exercise name/load type/per-side (shared across routines, link icon marks shared ones), sets/rep range/rest, superset rest, move supersets and exercises with up/down buttons, superset dropdown (none / existing / new, tri-sets allowed), ungroup, remove (confirm), add from library or new. Pure ops in `src/routine/ops.ts` + `units.ts` with 12 tests (23 total).
+- Next: Phase 3 (workout logging).
+- Phase 2 notes: reordering uses up/down buttons instead of drag and drop (more reliable in Safari and keyboard friendly). Number fields save on each valid keystroke, support arrow keys (Shift = 10), and revert on blur if invalid. A superset whose last member leaves is deleted automatically.
 - Phase 1 notes: superset groups have no stored label; A/B/C come from position. Timestamps are ISO strings, dates `YYYY-MM-DD`. Repos take `db` as first argument so tests use a fresh fake IndexedDB per test.
 - Phase 0 notes: Preact pinned to 10.x because `@tabler/icons-preact` doesn't support Preact 11 yet. Vite `base: './'` so the build works under any repo name. Theme is stored in `localStorage`, not IndexedDB, so `index.html` can apply it before first paint (no flash). Browser-pane launch configs live in the workspace root `.claude/launch.json` (`fitness-dev`, `fitness-pages-preview`).
 - Working style: build one phase at a time, then stop so Faustino can test it before continuing.

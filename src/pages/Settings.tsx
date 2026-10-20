@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'preact/hooks';
+import { RoutineEditor } from '../components/RoutineEditor';
 import { storageStatus, type StorageStatus } from '../db/storage';
 import { useTheme, type Theme } from '../theme';
 
@@ -26,6 +27,10 @@ export function SettingsPage() {
       <header class="page-header">
         <h1>Settings</h1>
       </header>
+      <section class="panel wide">
+        <h2>Routines</h2>
+        <RoutineEditor />
+      </section>
       <section class="panel">
         <h2>Appearance</h2>
         <div class="row">
