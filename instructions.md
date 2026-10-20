@@ -14,7 +14,9 @@ Single source of truth for building the fitness tracker. Read this fully before 
 - Phase 4 done, committed and pushed. History page: month-grouped list (newest first) on the left, selected session on the right (`#/history/<id>` links), rendered from the session's own snapshot and mode. Edit mode (draft, Save/Cancel): start date/time, duration, per-set load/reps/sides/done, load kind. Validation: no future start, 1–600 min, ticked sets need reps. Delete = soft delete with confirm. Summary screen links to the session in History. Helpers in `src/history/history.ts`, 7 tests (46 total). Set input moved to `src/workout/cells.tsx`.
 - Phase 5 done, committed and pushed. Settings > Schedule: Mon–Sun day toggles plus 3-day (Mon/Wed/Fri) and 4-day (Mon/Tue/Thu/Fri) presets; saves only when 3 or 4 days are picked. Workout start screen: status line (training day / rest day with next day / done for today) and a Monday-first week strip (done, planned by alternation, missed, rest). Logic in `src/schedule/schedule.ts`, 9 tests (55 total).
 - Phase 6 done, committed and pushed. Dashboard now has tabs: Overview (phase 7) and Body (`#/dashboard/body`). Body tab: latest body weight and waist with change since first entry, a form for one date (body weight and waist, plus chest/hips/neck/arm/thigh/calf behind "More measurements"), and a per-date table with edit and delete. Picking a date that already has entries prefills it; clearing a field and saving removes that value. Validation per metric range, no future dates, commas accepted. Logic in `src/body/metrics.ts`, 6 tests (61 total).
-- Next: Phase 7 (dashboard).
+- Phase 7 done, committed and pushed. Dashboard Overview: tiles (this week vs schedule, 4-week average, weekly streak, consistency % of full weeks on target, total), workouts-per-week bar chart (12 weeks, dashed target), recent workouts, recent PRs (30 days, with previous value), exercise progress line chart (exercise picker; estimated 1RM / top weight / best set reps / total reps) with table view, all-time PR table. Body tab gained a trend line chart per measurement. Logic in `src/stats/stats.ts`, 9 tests (70 total). Verified against hand-calculated fixture data.
+- Next: Phase 8 (backup).
+- Phase 7 notes: only ticked sets count. Estimated 1RM = Epley, loaded (DB/weighted) sets only. Bodyweight "load" PRs use added kg; assistance never counts as load. An exercise's first session is the baseline, not a PR. Heaviest record keeps the most reps at the top weight. Target per week = number of schedule days.
 - Phase 6 notes: one value per metric per day (saving again updates it). Body metrics live on the Dashboard rather than a fifth sidebar item, to keep the four-item sidebar from the spec.
 - Phase 5 notes: "Up next" = routine after the last completed session (manual picks shift the alternation naturally). Days before the first ever workout are never "missed". Either routine can still be started on any day.
 - Phase 4 notes: history edits are not autosaved (explicit Save) to avoid accidental changes. Deleted sessions stop counting for "Last" and "Up next".
@@ -41,7 +43,7 @@ Deliver a complete, working, deployable application, not a mockup or prototype. 
 | Location | App lives in `Fitness Tracker/`, in its own new git repo |
 | Stack | Vite + TypeScript + Preact |
 | Storage | IndexedDB via the `idb` wrapper |
-| Charts | uPlot |
+| Charts | Small custom SVG components (`src/charts/charts.tsx`), single accent colour, hover/arrow-key tooltips. Chosen over uPlot in phase 7: lighter and themes with CSS variables |
 | Icons | Tabler Icons via `@tabler/icons-preact` (MIT, tree-shaken). SF Symbols can't be used on the web due to Apple's license |
 | Routing | Hash routing (`#/workout`) so GitHub Pages subpaths never 404 |
 | Units | kg and cm, stored in those units. Display unit setting exists but defaults to kg |

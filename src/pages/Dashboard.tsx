@@ -1,6 +1,6 @@
 import { BodyPanel } from '../body/BodyPanel';
-import { EmptyState } from '../components/EmptyState';
 import { href, useRouteParam } from '../router';
+import { Overview } from '../stats/Overview';
 
 const TABS = [
   { id: 'overview', label: 'Overview' },
@@ -27,13 +27,7 @@ export function DashboardPage() {
           </a>
         ))}
       </nav>
-      {tab === 'body' ? (
-        <BodyPanel />
-      ) : (
-        <EmptyState title="No workouts logged yet">
-          Your training frequency, personal records, and strength trends will appear here once you log workouts.
-        </EmptyState>
-      )}
+      {tab === 'body' ? <BodyPanel /> : <Overview />}
     </>
   );
 }

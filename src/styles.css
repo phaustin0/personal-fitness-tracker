@@ -1168,3 +1168,165 @@ a.tab {
 .body-table .row-actions {
   width: 72px;
 }
+
+.overview {
+  max-width: 1120px;
+}
+
+.overview .stat-row {
+  flex-wrap: wrap;
+}
+
+.overview .stat {
+  flex: 1 1 160px;
+}
+
+.chart-panel {
+  margin-bottom: 16px;
+}
+
+.chart-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.chart-head h2 {
+  margin: 0;
+}
+
+.chart {
+  position: relative;
+  width: 100%;
+}
+
+.chart svg {
+  display: block;
+  outline: none;
+}
+
+.chart svg:focus-visible {
+  box-shadow: 0 0 0 2px var(--accent);
+  border-radius: 6px;
+}
+
+.chart .grid {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.chart .axis {
+  fill: var(--text-muted);
+  font-size: 11px;
+}
+
+.chart .series-line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.chart .series-dot {
+  fill: var(--accent);
+  stroke: var(--surface);
+  stroke-width: 2;
+}
+
+.chart .crosshair {
+  stroke: var(--border-strong);
+  stroke-width: 1;
+}
+
+.chart .series-bar {
+  fill: var(--accent);
+  opacity: 0.85;
+}
+
+.chart .series-bar.active {
+  opacity: 1;
+}
+
+.chart .hit {
+  fill: transparent;
+}
+
+.chart .target {
+  stroke: var(--text-secondary);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+
+.chart-tip {
+  position: absolute;
+  pointer-events: none;
+  background: var(--surface-hover);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 3;
+  color: var(--text-secondary);
+}
+
+.chart-tip-title {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.chart-empty {
+  padding: 24px 0;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.two-col .panel {
+  max-width: none;
+}
+
+.two-col .panel + .panel {
+  margin-top: 0;
+}
+
+.plain-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.plain-list a {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr) auto;
+  gap: 10px;
+  padding: 6px 4px;
+  border-radius: 6px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.plain-list a:hover {
+  background: var(--surface-hover);
+}
+
+.data-table summary {
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.data-table table {
+  margin-top: 8px;
+}
+
+.pr-list a {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) auto;
+}

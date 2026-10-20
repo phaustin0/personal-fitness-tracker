@@ -1,5 +1,6 @@
 import { IconPencil, IconTrash } from '@tabler/icons-preact';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import { LineChart } from '../charts/charts';
 import { getDB } from '../db/db';
 import { now } from '../db/records';
 import { bodyMetrics } from '../db/repos';
@@ -18,6 +19,7 @@ export function BodyPanel() {
   const [date, setDate] = useState(todayKey());
   const [text, setText] = useState<Record<string, string>>({});
   const [showMore, setShowMore] = useState(false);
+  const [trendType, setTrendType] = useState('bodyweight');
   const [errors, setErrors] = useState<string[]>([]);
   const [message, setMessage] = useState<string | null>(null);
   const firstInput = useRef<HTMLInputElement>(null);
@@ -44,6 +46,7 @@ export function BodyPanel() {
 
   const usedTypes = METRICS.filter((m) => rows.some((r) => r.values.has(m.type)));
   const visible = METRICS.filter((m) => m.primary || showMore);
+  const trend = usedTypes.find((m) => m.type === trendType) ?? usedTypes[0];
 
   const save = async (e: Event) => {
     e.preventDefault();
@@ -102,11 +105,44 @@ export function BodyPanel() {
                 ? 'No entries yet'
                 : s.count === 1
                   ? `Logged ${dateLabel(s.latest.date)}`
-                  : `${s.change > 0 ? '+' : ''}${fmtNum(s.change)} ${unit} since ${dateLabel(s.first.date)}`}
+                  : `${s.change > 0 ? '+' : s.change < 0 ? '−' : '±'}${fmtNum(Math.abs(s.change))} ${unit} since ${dateLabel(s.first.date)}`}
             </div>
           </div>
         ))}
       </div>
+
+      {usedTypes.length > 0 && (
+        <section class="panel wide chart-panel">
+          <div class="chart-head">
+            <h2>Trend</h2>
+            <div class="spacer" />
+            <div class="segmented" role="radiogroup" aria-label="Measurement">
+              {usedTypes.map((m) => (
+                <button
+                  key={m.type}
+                  type="button"
+                  role="radio"
+                  aria-checked={trend.type === m.type}
+                  class={trend.type === m.type ? 'seg active' : 'seg'}
+                  onClick={() => setTrendType(m.type)}
+                >
+                  {m.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <LineChart
+            label={`${trend.label} over time`}
+            unit={trend.unit}
+            points={[...rows].reverse().flatMap((r) => {
+              const e = r.values.get(trend.type);
+              if (!e) return [];
+              const [y, mo, d] = r.date.split('-').map(Number);
+              return [{ x: new Date(y, mo - 1, d).getTime(), y: e.value, lines: [] }];
+            })}
+          />
+        </section>
+      )}
 
       <form class="panel body-form" onSubmit={save}>
         <h2>{existing.size ? `Edit ${dateLabel(date)}` : 'Log measurements'}</h2>
