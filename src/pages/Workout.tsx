@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { EmptyState } from '../components/EmptyState';
 import { getDB } from '../db/db';
-import { sessions as sessionRepo, templates as templateRepo } from '../db/repos';
-import type { Session, Template } from '../db/types';
+import { sessions as sessionRepo, settings, templates as templateRepo } from '../db/repos';
+import { WeekStrip } from '../schedule/WeekStrip';
+import { nextTemplate, nextTrainingDay, weekPlan, type WeekDay } from '../schedule/schedule';
+import type { Schedule, Session, Template } from '../db/types';
 import { href } from '../router';
 import { setWorkoutActive } from '../workout/activeFlag';
 import { SessionView } from '../workout/SessionView';
@@ -121,6 +123,8 @@ function StartScreen({ onStart, error }: { onStart: (templateId: string) => void
   const [lastDone, setLastDone] = useState<Map<string, string>>(new Map());
   const [starting, setStarting] = useState(false);
   const suggestedBtn = useRef<HTMLButtonElement>(null);
+  const [week, setWeek] = useState<WeekDay[]>([]);
+  const [status, setStatus] = useState('');
 
   useEffect(() => suggestedBtn.current?.focus(), [routines]);
 
@@ -129,13 +133,15 @@ function StartScreen({ onStart, error }: { onStart: (templateId: string) => void
       const db = await getDB();
       const ts = await templateRepo.list(db);
       const completed = await sessionRepo.byStatus(db, 'completed');
-      const last = completed.at(-1);
+      const schedule = await settings.get(db, 'schedule');
       const map = new Map<string, string>();
       for (const s of completed) map.set(s.templateId, s.startedAt);
-      // Strict alternation: next is the routine after the last completed one.
-      const idx = last ? ts.findIndex((t) => t.id === last.templateId) : -1;
-      setSuggestedId(ts.length ? ts[(idx + 1) % ts.length].id : null);
+      const today = new Date();
+      const days = weekPlan(schedule, ts, completed, today);
+      setSuggestedId(nextTemplate(ts, completed)?.id ?? null);
       setLastDone(map);
+      setWeek(days);
+      setStatus(todayStatus(schedule, days, nextTemplate(ts, completed), today));
       setRoutines(ts);
     })();
   }, []);
@@ -148,6 +154,12 @@ function StartScreen({ onStart, error }: { onStart: (templateId: string) => void
         <h1>Workout</h1>
       </header>
       {error && <div class="banner-error">{error}</div>}
+      {routines.length > 0 && (
+        <div class="schedule-status">
+          <p>{status}</p>
+          <WeekStrip days={week} />
+        </div>
+      )}
       {routines.length === 0 ? (
         <EmptyState title="No routines">
           Create one in <a href={href('settings')}>Settings</a>.
@@ -189,6 +201,16 @@ function StartScreen({ onStart, error }: { onStart: (templateId: string) => void
       )}
     </>
   );
+}
+
+function todayStatus(schedule: Schedule, week: WeekDay[], next: Template | null, now: Date): string {
+  const today = week.find((d) => d.isToday);
+  if (today?.done.length) return `Done for today: ${today.done.map((s) => s.plan.templateName).join(' and ')}.`;
+  if (!next) return '';
+  if (today?.scheduled) return `Today is a training day. ${next.name} is up next.`;
+  const day = nextTrainingDay(schedule, now);
+  const when = day ? day.toLocaleDateString(undefined, { weekday: 'long' }) : 'your next training day';
+  return `Rest day. ${next.name} is up next on ${when}. You can still train today if you want.`;
 }
 
 function formatDate(iso: string): string {

@@ -1024,3 +1024,99 @@ a.text-btn {
 .w-dur {
   width: 72px;
 }
+
+.schedule-status {
+  margin-bottom: 20px;
+  max-width: 900px;
+}
+
+.schedule-status p {
+  margin: 0 0 10px;
+}
+
+.week {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.day {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  min-height: 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--surface);
+}
+
+.day.rest {
+  background: transparent;
+}
+
+.day.today {
+  border-color: var(--accent);
+}
+
+.day.done {
+  background: var(--success-soft);
+  border-color: transparent;
+}
+
+.day.done .day-what {
+  color: var(--success);
+}
+
+.day.missed .day-what {
+  color: var(--text-muted);
+}
+
+.day-name {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.day-what {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.day-toggles,
+.preset-btns {
+  display: flex;
+  gap: 4px;
+}
+
+.preset-btns {
+  gap: 8px;
+}
+
+.day-toggle {
+  min-width: 44px;
+  height: 28px;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.day-toggle.on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.schedule-note {
+  margin: 12px 0 0;
+}
+
+.schedule-note.warn {
+  color: var(--danger);
+}
