@@ -880,3 +880,147 @@ input.cell.invalid {
   border-bottom: 1px solid var(--border);
   vertical-align: top;
 }
+
+.summary-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+a.text-btn {
+  text-decoration: none;
+}
+
+.history {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.history-list {
+  position: sticky;
+  top: 0;
+  max-height: calc(100vh - 76px);
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.history-list h1 {
+  margin-bottom: 16px;
+}
+
+.month {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 14px 0 6px;
+}
+
+.h-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.h-item:hover {
+  background: var(--surface-hover);
+}
+
+.h-item.active {
+  background: var(--nav-active);
+}
+
+.h-date {
+  font-weight: 600;
+}
+
+.h-name {
+  color: var(--text-secondary);
+  text-align: right;
+}
+
+.h-meta {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.history-detail {
+  min-width: 0;
+  max-width: 1100px;
+}
+
+.detail-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.detail-title {
+  font-size: 20px;
+  color: var(--text);
+  margin: 0 0 4px;
+}
+
+.danger-text:hover {
+  color: var(--danger);
+}
+
+.h-units {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.read-grid {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) minmax(0, 1fr) 64px;
+  gap: 6px;
+  align-items: center;
+  padding: 3px 6px;
+}
+
+.read-grid.head {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.read-row.skipped {
+  color: var(--text-muted);
+}
+
+.read-tick {
+  color: var(--success);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.set-grid.edit {
+  grid-template-columns: 28px 80px 72px 40px;
+}
+
+.set-grid.edit.sides {
+  grid-template-columns: 28px 80px 60px 60px 40px;
+}
+
+.edit-timing {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.edit-timing label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.w-dur {
+  width: 72px;
+}

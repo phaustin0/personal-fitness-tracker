@@ -238,9 +238,14 @@ function Summary({ session, previous, onDone }: { session: Session; previous: Pr
           ))}
         </tbody>
       </table>
-      <button type="button" class="btn primary" ref={doneBtn} onClick={onDone}>
-        Done
-      </button>
+      <div class="summary-actions">
+        <button type="button" class="btn primary" ref={doneBtn} onClick={onDone}>
+          Done
+        </button>
+        <a class="text-btn" href={href('history', session.id)}>
+          View or edit in History
+        </a>
+      </div>
     </div>
   );
 }
