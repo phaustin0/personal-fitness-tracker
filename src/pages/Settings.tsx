@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'preact/hooks';
+import { storageStatus, type StorageStatus } from '../db/storage';
 import { useTheme, type Theme } from '../theme';
 
 const themes: { value: Theme; label: string }[] = [
@@ -5,8 +7,20 @@ const themes: { value: Theme; label: string }[] = [
   { value: 'light', label: 'Light' },
 ];
 
+const storageLabels: Record<StorageStatus, string> = {
+  persistent: 'Persistent',
+  'best-effort': 'Best effort',
+  unsupported: 'Unknown',
+};
+
 export function SettingsPage() {
   const [theme, setTheme] = useTheme();
+  const [storage, setStorage] = useState<StorageStatus | null>(null);
+
+  useEffect(() => {
+    void storageStatus().then(setStorage);
+  }, []);
+
   return (
     <>
       <header class="page-header">
@@ -30,6 +44,13 @@ export function SettingsPage() {
               </button>
             ))}
           </div>
+        </div>
+      </section>
+      <section class="panel">
+        <h2>Data</h2>
+        <div class="row">
+          <span class="row-label">Storage</span>
+          <span class="row-value">{storage ? storageLabels[storage] : 'Checking…'}</span>
         </div>
       </section>
     </>

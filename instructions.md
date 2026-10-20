@@ -7,8 +7,10 @@ Single source of truth for building the fitness tracker. Read this fully before 
 ## Status
 
 - Planning: complete and approved.
-- **Phase 0 built, awaiting Faustino's review.** Scaffold, hash router, sidebar shell, dark/light theme, Pages workflow. Verified locally under a `/fitness-tracker/` subpath (`npm run preview:pages` after `npm run build`). Not yet pushed to GitHub; nothing committed yet.
-- Next: Phase 1 (data layer).
+- Phase 0 done and deployed: https://phaustin0.github.io/personal-fitness-tracker/ (repo `phaustin0/personal-fitness-tracker`, Pages source = GitHub Actions).
+- **Phase 1 built, awaiting Faustino's review, not committed.** `src/db/`: types, schema + migration chain, `getDB()`, generic repos with soft delete, settings/meta key-value, one-time transactional seed, `navigator.storage.persist()`. 11 Vitest tests (`npm test`). App seeds on startup; Settings shows storage persistence. Fatal screen if IndexedDB can't open.
+- Next: Phase 2 (routine editor).
+- Phase 1 notes: superset groups have no stored label; A/B/C come from position. Timestamps are ISO strings, dates `YYYY-MM-DD`. Repos take `db` as first argument so tests use a fresh fake IndexedDB per test.
 - Phase 0 notes: Preact pinned to 10.x because `@tabler/icons-preact` doesn't support Preact 11 yet. Vite `base: './'` so the build works under any repo name. Theme is stored in `localStorage`, not IndexedDB, so `index.html` can apply it before first paint (no flash). Browser-pane launch configs live in the workspace root `.claude/launch.json` (`fitness-dev`, `fitness-pages-preview`).
 - Working style: build one phase at a time, then stop so Faustino can test it before continuing.
 
@@ -144,7 +146,7 @@ exercises        // keyPath: id; index: name
 templates        // keyPath: id   (Full Body A, Full Body B)
 { id, name, emphasis?, order,
   mode: 'superset' | 'straight',          // default 'superset'
-  groups: [{ id, label, restSec, order }],
+  groups: [{ id, restSec, order }],      // labels A, B, C... derived from position at render time
   slots:  [{ id, exerciseId, order, groupId: string | null,
              sets, repMin, repMax, restSec }],
   createdAt, updatedAt, deletedAt? }
