@@ -1,3 +1,4 @@
+import { Shortcuts } from './components/Shortcuts';
 import { Sidebar } from './components/Sidebar';
 import { useRoute } from './router';
 import { DashboardPage } from './pages/Dashboard';
@@ -21,6 +22,7 @@ export function App() {
       <main class="main">
         <Page />
       </main>
+      <Shortcuts />
     </div>
   );
 }

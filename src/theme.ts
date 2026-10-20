@@ -11,6 +11,7 @@ export function useTheme(): [Theme, (t: Theme) => void] {
   const [theme, setThemeState] = useState<Theme>(readTheme);
   const setTheme = (t: Theme) => {
     document.documentElement.dataset.theme = t;
+    document.querySelector<HTMLMetaElement>('#theme-color')?.setAttribute('content', t === 'light' ? '#f5f5f7' : '#161618');
     try {
       localStorage.setItem('theme', t);
     } catch {

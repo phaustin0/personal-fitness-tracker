@@ -287,7 +287,7 @@ function SlotRow({ slot, tag, inGroup, first, last, template: t, labels, byId, s
   const patch = (p: Parameters<typeof updateSlot>[2]) => onChange(updateSlot(t, slot.id, p));
 
   return (
-    <div class="slot-grid slot-row">
+    <div class="slot-grid slot-row" data-exercise={exercise.name}>
       <span class="slot-tag">{tag}</span>
       <span class="name-cell">
         <TextField

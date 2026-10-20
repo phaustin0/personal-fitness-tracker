@@ -10,7 +10,8 @@
     "preview:pages": "vite preview --base /fitness-tracker/ --port 4173 --strictPort",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@tabler/icons-preact": "^3.49.0",
@@ -18,7 +19,9 @@
     "preact": "^10.29.8"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@preact/preset-vite": "^2.10.6",
+    "@types/node": "^26.6.5",
     "fake-indexeddb": "^6.2.6",
     "typescript": "^7.0.2",
     "vite": "^8.3.4",

@@ -29,6 +29,9 @@ export function Sidebar({ current }: { current: Route }) {
           </li>
         ))}
       </ul>
+      <div class="sidebar-foot">
+        Press <kbd>?</kbd> for shortcuts
+      </div>
     </nav>
   );
 }
